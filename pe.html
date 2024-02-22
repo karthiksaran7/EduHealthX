@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Education</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .options {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .lesson-option {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px 30px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .lesson-option:hover {
+            background-color: #2980b9;
+        }
+
+        .lesson-option h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Physical Education</h1>
+    </header>
+    <main>
+        <section class="options">
+            <div class="lesson-option" onclick="navigateTo('pe1')">
+                <h3>Lesson 1: Introduction to Physical Education</h3>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function navigateTo(lesson) {
+            window.location.href = lesson + ".html";
+        }
+    </script>
+</body>
+</html>

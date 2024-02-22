@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Health Education Web App</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-left: 10px;
+        }
+
+        #submit-btn, #next-btn, #prev-btn {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #submit-btn:hover, #next-btn:hover, #prev-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            text-align: center;
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        .question-nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .question-nav button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .question-nav button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quiz</h1>
+    </header>
+    <main>
+        <h2>Test Your Knowledge</h2>
+        <div id="questions">
+            <!-- Questions will be dynamically added here -->
+        </div>
+        <div class="question-nav">
+            <button id="prev-btn" disabled>Previous</button>
+            <button id="next-btn">Next</button>
+        </div>
+        <button id="submit-btn">Submit Quiz</button>
+        <div id="result">
+            <!-- Quiz result will be displayed here -->
+        </div>
+    </main>
+    <footer>
+        &copy; 2024 Health Education Web App
+    </footer>
+    <script>
+        // Quiz questions with options
+        const questions = [
+            {
+                question: "What is the ratio of the circumference of a circle to its diameter, often denoted by the Greek letter π (pi)?",
+                options: ["2", "π", "3", "4"],
+                answer: "B"
+            },
+            {
+                question: "In a survey, it was found that 30% of students in a class have a balanced diet consisting of fruits, vegetables, and whole grains. If there are 50 students in the class, how many students are likely to have a balanced diet?",
+                options: ["10", "15", "20", "25"],
+                answer: "C"
+            },
+            {
+                question: "The body mass index (BMI) is a measure that indicates whether a person has a healthy body weight based on their height and weight. Calculate the BMI of a person who is 1.75 meters tall and weighs 70 kilograms.",
+                options: ["20", "22.86", "24", "26.85"],
+                answer: "B"
+            },
+            {
+                question: "A recipe for a healthy smoothie calls for 2 cups of spinach, 1 banana, and 1 cup of almond milk. If each serving provides 3 grams of fiber, how much fiber would be in a smoothie for two people?",
+                options: ["3 grams", "6 grams", "9 grams", "12 grams"],
+                answer: "C"
+            },
+            {
+                question: "The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1. If you were to represent the sequence visually by plotting the numbers as points on a graph and connecting them with straight lines, what geometric shape would you observe?",
+                options: ["Square", "Circle", "Triangle", "Spiral"],
+                answer: "D"
+            }
+        ];
+
+        let currentQuestion = 0;
+        const questionsContainer = document.getElementById('questions');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const resultContainer = document.getElementById('result');
+
+        // Function to display current question
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            questionsContainer.innerHTML = `
+                <div class="question">
+                    <p>${currentQuestion + 1}. ${question.question}</p>
+                    ${question.options.map((option, index) => `
+                        <div class="option">
+                            <input type="radio" name="question" value="${String.fromCharCode(65 + index)}" id="option${index}">
+                            <label for="option${index}">${option}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Function to calculate score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((question, index) => {
+                const selectedOption = document.querySelector(`input[name="question"]:checked`);
+                if (selectedOption) {
+                    if (selectedOption.value === question.answer) {
+                        score++;
+                    }
+                }
+            });
+            return score;
+        }
+
+        // Function to handle quiz submission
+        function submitQuiz() {
+            const score = calculateScore();
+            const totalQuestions = questions.length;
+            resultContainer.innerHTML = `<p>You scored ${score} out of ${totalQuestions}.</p>`;
+            resultContainer.style.display = 'block';
+            submitBtn.disabled = true;
+            nextBtn.disabled = true;
+            prevBtn.disabled = true;
+        }
+
+        // Function to handle next button click
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                displayQuestion();
+                prevBtn.disabled = false;
+            } else {
+                // No more questions, submit quiz
+                submitQuiz();
+            }
+        }
+
+        // Function to handle previous button click
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+                nextBtn.disabled = false;
+            }
+            if (currentQuestion === 0) {
+                prevBtn.disabled = true;
+            }
+        }
+
+        // Display first question when the page loads
+        displayQuestion();
+        prevBtn.disabled = true;
+
+        // Event listeners for next and previous buttons
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', prevQuestion);
+
+        // Event listener for quiz submission
+        submitBtn.addEventListener('click', submitQuiz);
+    </script>
+</body>
+</html>
